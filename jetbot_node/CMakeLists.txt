@@ -1,0 +1,112 @@
+################################################################################
+# Set minimum required version of cmake, project name and compile options
+################################################################################
+cmake_minimum_required(VERSION 3.5)
+project(jetbot_node)
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+################################################################################
+# Find ament packages and libraries for ament and system dependencies
+################################################################################
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+
+################################################################################
+# Setup for python modules and scripts
+################################################################################
+
+################################################################################
+# Declare ROS messages, services and actions
+################################################################################
+
+################################################################################
+# Declare ROS dynamic reconfigure parameters
+################################################################################
+
+################################################################################
+# Declare catkin specific configuration to be passed to dependent projects
+################################################################################
+
+################################################################################
+# Build
+################################################################################
+include_directories(
+  ${rclcpp_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
+  ${sensor_msgs_INCLUDE_DIRS}
+  ${geometry_msgs_INCLUDE_DIRS}
+  ${nav_msgs_INCLUDE_DIRS}
+  ${tf2_INCLUDE_DIRS}
+  ${tf2_ros_INCLUDE_DIRS}
+)
+
+set(ALL_SRCS
+  "src/constants.cpp"
+  "src/joint_states.cpp"
+  "src/odometry.cpp"
+  "src/lidar.cpp"
+  )
+add_library(${PROJECT_NAME} ${ALL_SRCS})
+
+set(NODE_NAME "jetbot_ros")
+
+add_executable(${NODE_NAME} src/node_main.cpp)
+target_link_libraries(${NODE_NAME} ${PROJECT_NAME})
+ament_target_dependencies(
+  ${NODE_NAME}
+  "rclcpp"
+  "std_msgs"
+  "sensor_msgs"
+  "geometry_msgs"
+  "nav_msgs"
+  "turtlebot3_msgs"
+  "tf2"
+  "tf2_ros"
+  "builtin_interfaces"
+)
+
+################################################################################
+# Install
+################################################################################
+install(TARGETS
+  ${NODE_NAME}
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+################################################################################
+# Test
+################################################################################
+if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
+  find_package(ament_cmake_gtest REQUIRED)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+  # add_subdirectory(test)
+endif()
+
+################################################################################
+# Macro for ament package
+################################################################################
+ament_export_dependencies(rclcpp)
+ament_export_dependencies(std_msgs)
+ament_export_dependencies(sensor_msgs)
+ament_export_dependencies(geometry_msgs)
+ament_export_dependencies(nav_msgs)
+ament_export_dependencies(tf2)
+ament_export_dependencies(tf2_ros)
+ament_export_dependencies(builtin_interfaces)
+ament_package()

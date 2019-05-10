@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "~/ros2_ws/install/rcl/include/**",
+                "~/ros2_ws/install/rclcpp/include/**",
+                "~/ros2_ws/install/sensor_msgs/include/**",
+                "~/ros2_ws/install/nav_msgs/include/**",
+                "~/ros2_ws/install/builtin_interfaces/include/**",
+                "~/ros2_ws/install/rosidl_generator_cpp/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

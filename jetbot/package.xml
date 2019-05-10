@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>jetbot</name>
+  <version>1.0.0</version>
+  <description>ROS2 packages for Jetbot</description>
+  
+  <license>Apache 2.0</license>
+  <maintainer email="richard.osterloh@gmail.com">Richard Osterloh</maintainer>
+  
+  <author email="richard.osterloh@gmail.com">Richard Osterloh</author>
+  <url type="repository">https://github.com/rosterloh/jetbot</url>
+  <url type="bugtracker">https://github.com/rosterloh/jetbot/issues</url>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>jetbot_bringup</exec_depend>
+  <!-- <exec_depend>jetbot_cartographer</exec_depend> -->
+  <exec_depend>jetbot_description</exec_depend>
+  <!-- <exec_depend>jetbot_lidar</exec_depend> -->
+  <exec_depend>jetbot_node</exec_depend>
+  <!-- <exec_depend>jetbot_teleop</exec_depend> -->
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
