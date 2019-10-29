@@ -2,7 +2,7 @@
 # Set minimum required version of cmake, project name and compile options
 ################################################################################
 cmake_minimum_required(VERSION 3.5)
-project(jetbot_bringup)
+project(jetbot_msgs)
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
@@ -15,17 +15,38 @@ endif()
 ################################################################################
 # Find ament packages and libraries for ament and system dependencies
 ################################################################################
+find_package(action_msgs REQUIRED)
 find_package(ament_cmake REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
 
 ################################################################################
-# Install
+# Setup for python modules and scripts
 ################################################################################
-install(
-  DIRECTORY launch param
-  DESTINATION share/${PROJECT_NAME}
+
+################################################################################
+# Declare ROS messages, services and actions
+################################################################################
+set(msg_files
+  "msg/SensorState.msg"
+  "msg/Sound.msg"
+  "msg/VersionInfo.msg"
 )
 
-################################################################################
-# Macro for ament package
-################################################################################
+set(srv_files
+  "srv/Sound.srv"
+)
+
+set(action_files
+  "action/Patrol.action"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  ${srv_files}
+  ${action_files}
+  DEPENDENCIES action_msgs std_msgs
+  ADD_LINTER_TESTS
+)
+ament_export_dependencies(rosidl_default_runtime)
 ament_package()

@@ -2,89 +2,54 @@
 #include <memory>
 #include <string>
 
+#include <rcutils/cmdline_parser.h>
 #include "rclcpp/rclcpp.hpp"
 
-#include "sensor_msgs/msg/joint_state.hpp"
-#include "nav_msgs/msg/odometry.hpp"
-#include "builtin_interfaces/msg/time.hpp"
-#include <tf2_ros/transform_broadcaster.h>
+#include "jetbot_node/diff_drive_controller.hpp"
+#include "jetbot_node/jetbot.hpp"
 
-#include "constants.h"
-#include "joint_state.h"
-#include "odometry.h"
-
-namespace jetbot
+void help_print()
 {
-class Jetbot : public rclcpp::Node
-{
-public:
-    explicit Jetbot(const std::string &node_name)
-        : Node(node_name)
-    {
-        RCLCPP_INFO(get_logger(), "Init Jetbot Node Main");
-
-        node_handle_ = std::shared_ptr<::rclcpp::Node>(this, [](::rclcpp::Node *) {});
-
-        joint_state_ = std::make_shared<JointState>();
-        odom_ = std::make_shared<Odometry>();
-
-        tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(node_handle_);
-
-        joint_state_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(JointStateTopic, rmw_qos_profile_default);
-        odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>(OdomTopic, rmw_qos_profile_default);
-        time_pub_ = this->create_publisher<builtin_interfaces::msg::Time>(TimeTopic, rmw_qos_profile_default);
-
-        joint_state_timer_ = this->create_wall_timer(
-            JointStatePublishPeriodMillis,
-            [this]() {
-                this->joint_state_pub_->publish(this->joint_state_->getJointState(this->now()));
-            });
-
-        odom_timer_ = this->create_wall_timer(
-            OdometryPublishPeriodMillis,
-            [this]() {
-                this->odom_->updateJointState(this->joint_state_->getJointState(this->now()));
-                this->odom_pub_->publish(this->odom_->getOdom(this->now(), WheelRadius));
-                this->tf_broadcaster_->sendTransform(this->odom_->getOdomTf());
-            });
-
-        time_timer_ = this->create_wall_timer(
-            TimeSyncPublishPeriodMillis,
-            [this]() {
-                auto time_msg = builtin_interfaces::msg::Time();
-                time_msg = this->now();
-                this->time_pub_->publish(time_msg);
-            });
-    }
-
-    virtual ~Jetbot(){};
-
-private:
-    rclcpp::Node::SharedPtr node_handle_;
-
-    std::shared_ptr<JointState> joint_state_;
-    std::shared_ptr<Odometry> odom_;
-
-    std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
-
-    rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_pub_;
-    rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
-    rclcpp::Publisher<builtin_interfaces::msg::Time>::SharedPtr time_pub_;
-
-    rclcpp::TimerBase::SharedPtr joint_state_timer_;
-    rclcpp::TimerBase::SharedPtr odom_timer_;
-    rclcpp::TimerBase::SharedPtr time_timer_;
-};
-} // namespace jetbot
+  printf("For jetbot node : \n");
+  printf("jetbot_node [-i usb_port] [-h]\n");
+  printf("options:\n");
+  printf("-h : Print this help function.\n");
+  printf("-i usb_port: Connected USB port.");
+}
 
 int main(int argc, char *argv[])
 {
-    rclcpp::init(argc, argv);
+  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
 
-    auto node = std::make_shared<jetbot::Jetbot>("jetbot_node");
-
-    rclcpp::spin(node);
-
-    rclcpp::shutdown();
+  if (rcutils_cli_option_exist(argv, argv + argc, "-h"))
+  {
+    help_print();
     return 0;
+  }
+
+  rclcpp::init(argc, argv);
+
+  std::string usb_port = "/dev/ttyACM0";
+  char * cli_options;
+  cli_options = rcutils_cli_get_option(argv, argv + argc, "-i");
+  if (nullptr != cli_options)
+  {
+    usb_port = std::string(cli_options);
+  }
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+
+  auto jetbot = std::make_shared<jetbot::Jetbot>(usb_port);
+  auto diff_drive_controller =
+    std::make_shared<jetbot::DiffDriveController>(
+      jetbot->get_wheels()->separation,
+      jetbot->get_wheels()->radius);
+
+  executor.add_node(jetbot);
+  executor.add_node(diff_drive_controller);
+  executor.spin();
+
+  rclcpp::shutdown();
+
+  return 0;
 }

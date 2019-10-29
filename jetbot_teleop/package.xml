@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>jetbot_description</name>
+  <name>jetbot_teleop</name>
   <version>1.0.0</version>
   <description>
-    3D models of the Jetbot for simulation and visualisation
+    Teleoperation node using keyboard for JetBot.
   </description>
-  <license>Apache 2.0</license>
   <author email="richard.osterloh@gmail.com">Richard Osterloh</author>
   <maintainer email="richard.osterloh@gmail.com">Richard Osterloh</maintainer>
+  <license>Apache 2.0</license>
   <url type="repository">https://github.com/rosterloh/jetbot_ros2</url>
   <url type="bugtracker">https://github.com/rosterloh/jetbot_ros2/issues</url>
-  <buildtool_depend>ament_cmake</buildtool_depend>
-  <depend>urdf</depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>rclpy</exec_depend>
   <export>
-    <build_type>ament_cmake</build_type>
+    <build_type>ament_python</build_type>
   </export>
 </package>
