@@ -4,18 +4,24 @@
   <name>jetbot_bringup</name>
   <version>1.0.0</version>
   <description>
-    ROS 2 launch scripts for starting the Jetbot
+    Launch files and configuration scripts for operation of the Jetbot and suported sensors.
   </description>
   <license>Apache 2.0</license>
   <author email="richard.osterloh@gmail.com">Richard Osterloh</author>
   <maintainer email="richard.osterloh@gmail.com">Richard Osterloh</maintainer>
   <url type="repository">https://github.com/rosterloh/jetbot_ros2</url>
   <url type="bugtracker">https://github.com/rosterloh/jetbot_ros2/issues</url>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <exec_depend>jetbot_description</exec_depend>
-  <exec_depend>jetbot_node</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
   <exec_depend>robot_state_publisher</exec_depend>
-  <exec_depend>rviz2</exec_depend>
+
+  <!-- for interfacing with hardware -->
+  <exec_depend>jetbot_driver</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>jetbot_msgs</name>
+  <name>jetbot_ros2</name>
   <version>1.0.0</version>
   <description>
-    Message and service types: custom messages and services for Jetbot packages for ROS2
+    Metapackage containing all packages for operating a Jetbot robot.
   </description>
   <license>Apache 2.0</license>
   <author email="richard.osterloh@gmail.com">Richard Osterloh</author>
@@ -13,13 +13,12 @@
   <url type="bugtracker">https://github.com/rosterloh/jetbot_ros2/issues</url>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-
-  <depend>builtin_interfaces</depend>
-  <build_depend>rosidl_default_generators</build_depend>
-  <exec_depend>rosidl_default_runtime</exec_depend>
-
-  <member_of_group>rosidl_interface_packages</member_of_group>
-
+  
+  <exec_depend>jetbot_bringup</exec_depend>
+  <exec_depend>jetbot_description</exec_depend>
+  <exec_depend>jetbot_driver</exec_depend>
+  <exec_depend>jetbot_teleop</exec_depend>
+  
   <export>
     <build_type>ament_cmake</build_type>
   </export>

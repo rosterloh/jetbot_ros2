@@ -1,6 +1,6 @@
 # Jetbot ROS2 Package
 
-### Install ROS2 Dashing
+### Install ROS2 Eloquent
 ```bash
 # setup sources
 $ sudo apt update && sudo apt install curl gnupg2 lsb-release
@@ -8,10 +8,10 @@ $ curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo 
 $ sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
 
 # install ROS 2 packages
-$ sudo apt update && sudo apt install ros-dashing-ros-base
+$ sudo apt update && sudo apt install ros-eloquent-ros-base
 
 # add ROS paths to environment
-echo "source /opt/ros/dashing/setup.bash" >> ~/.bashrc
+echo "source /opt/ros/eloquent/setup.bash" >> ~/.bashrc
 ```
 
 ### Other setup

@@ -11,9 +11,16 @@
   <license>Apache 2.0</license>
   <url type="repository">https://github.com/rosterloh/jetbot_ros2</url>
   <url type="bugtracker">https://github.com/rosterloh/jetbot_ros2/issues</url>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>rclpy</exec_depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <depend>rclpy</depend>
+  <exec_depend>joy</exec_depend>
+  
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>

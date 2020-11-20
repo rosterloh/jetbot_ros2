@@ -1,0 +1,15 @@
+jetbot:
+  ros__parameters:
+    diagnostics_frequency: 0.2
+    odometry_frequency: 15.0
+    meters_per_encoder_sum: 0.00004492702 #0.00067390542
+    radians_per_encoder_difference: 0.00024753517 #0.0037130276
+    motor_control_gain_p: 0.00005
+    motor_control_gain_i: 0.000
+    motor_control_windup: 100.0
+    publish_tf: true
+
+joint_state_publisher:
+  ros__parameters:
+    publish_default_positions: true
+    rate: 30

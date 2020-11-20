@@ -11,9 +11,16 @@
   <maintainer email="richard.osterloh@gmail.com">Richard Osterloh</maintainer>
   <url type="repository">https://github.com/rosterloh/jetbot_ros2</url>
   <url type="bugtracker">https://github.com/rosterloh/jetbot_ros2/issues</url>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <depend>urdf</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <exec_depend>urdf</exec_depend>
+  
   <export>
     <build_type>ament_cmake</build_type>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" gazebo_model_path="${prefix}"/>
   </export>
 </package>
